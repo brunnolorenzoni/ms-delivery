@@ -17,7 +17,6 @@ export default (schema: JoiSchema) => {
       const { error } = schema[key]!.validate(req[key], { allowUnknown: true, abortEarly: false })
       if (error) {
         const { details } = error
-        console.log({error, details})
         throw new BadRequestError(details.map((i:any) => i.message.replace(/"/gi, '')).join(', '))
         
       }

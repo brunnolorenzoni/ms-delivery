@@ -11,7 +11,8 @@ export default class TrackingController {
   constructor(readonly service: TrackingService) {}
 
   saveTracking = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
-    const result = await this.service.save()
-    res.send(result)
+    const { order_id, truck_id, truck_position} = req.body
+    await this.service.save({ order_id, truck_id, truck_position })
+    res.status(200).send()
   }
 }

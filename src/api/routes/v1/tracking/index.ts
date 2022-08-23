@@ -13,11 +13,13 @@ const router = Router();
 const kafkaConnection = new KafkaConnection({
   clientId: 'my-app-consumer',
   brokers: ['localhost:9092']
-}).connection
-const repository = new QueueRepository(kafkaConnection)
+})
+const repository = new QueueRepository(kafkaConnection.connection)
 const service = new TrackingService(repository)
+const validation = JoiValidator(TrackingSchema.post)
 const controller = new TrackingController(service)
 
-router.post('/', JoiValidator(TrackingSchema.post), controller.saveTracking);
+
+router.post('/', validation, controller.saveTracking);
 
 export default router;
