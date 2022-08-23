@@ -1,14 +1,20 @@
 import { Router } from 'express';
 import TrackingController from '../../../controller/TrackingController';
 import TrackingService from '../../../../services/tracking';
-import UserRepository from '../../../../repositories/implementation/User/Memory';
+import QueueRepository from '../../../../repositories/implementation/Delivery/KafkaQueue';
+import KafkaConnection from '../../../../infrastructure/kafka'
+
 import TrackingSchema from '../../../validations/TrackingSchema'
 import JoiValidator from '../../../middleware/JoiValidator'
 
 
 const router = Router();
 
-const repository = new UserRepository()
+const kafkaConnection = new KafkaConnection({
+  clientId: 'my-app-consumer',
+  brokers: ['localhost:9092']
+}).connection
+const repository = new QueueRepository(kafkaConnection)
 const service = new TrackingService(repository)
 const controller = new TrackingController(service)
 

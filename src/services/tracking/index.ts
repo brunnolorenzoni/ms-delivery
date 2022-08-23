@@ -1,9 +1,9 @@
-import IUserRepository from '../../repositories/IUserRepository'
+import IKafkaRepository from '../../repositories/IKafkaRepository'
 
 
 class TrackingService {
   
-  constructor(readonly repository: IUserRepository) {}
+  constructor(readonly repository: IKafkaRepository) {}
 
   async save () : Promise<boolean> {
     return true
