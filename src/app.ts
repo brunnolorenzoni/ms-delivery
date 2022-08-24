@@ -1,12 +1,12 @@
 import express, { Application } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import credentials from './api/middleware/Credentials'
 import helmet from 'helmet';
 import ErrorMiddleware from "../src/api/middleware/ErrorMiddleware";
 
 
 import Routes from './api/routes';
+import Auth from './api/middleware/Auth';
 
 class App {
   public app: Application;
@@ -19,12 +19,12 @@ class App {
   }
 
   private middlewares (): void {
-    this.app.use(credentials);
+    this.app.use(cookieParser());
     this.app.use(cors({
       credentials: true,
-      origin: 'http:localhost:8080'
+      origin: ['http:localhost:3030', 'http://localhost:5500']
     }))
-    this.app.use(cookieParser());
+    this.app.use(Auth);
     this.app.use(express.json())
     this.app.use(helmet());
   }
