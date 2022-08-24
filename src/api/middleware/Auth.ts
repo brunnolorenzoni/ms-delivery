@@ -21,14 +21,14 @@ const check = (accessToken: string, jwt: string) => {
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const accessToken = req.headers?.authorization?.toString() || req.headers?.Authorization?.toString() || ''
-  if(!accessToken) next(new UnauthorizedError('Access token is missing'))
+  if(!accessToken) throw new UnauthorizedError('Access token is missing')
   
   const jwt = req.cookies?.jwt?.toString() || ''
-  if(!jwt) next(new UnauthorizedError('Refresh token is missing'))
+  if(!jwt) throw new UnauthorizedError('Refresh token is missing')
 
   check(accessToken, jwt).then(() => {
     next();
   }).catch((error) => {
-    next(new UnauthorizedError(error))
+    throw new UnauthorizedError(error)
   })
 }
